@@ -105,16 +105,54 @@ public class Arrays {
 
 
     public static int removeIndexes(int v[], int l, int r, int[] vi, int li, int ri) {
-       	 throw new UnsupportedOperationException();
+        int offset = 0;
+
+        for (int i = l; i <=r; i++) {
+          //
+            if(li<=ri&& i+offset<=r && i+offset==vi[li]){
+                offset++;
+                --i;
+                ++li;
+                continue;
+            }
+            if(offset+i>r)continue;
+
+
+            v[i]=v[i+offset];
+            if(li<=ri&& i>v[li]) {
+                ++li;
+                --i;
+            }}
+        return (r-l)-offset+1;
     }
 
 
     public static String greaterCommonPrefix(String[] v, int l, int r, String word) {
-		 throw new UnsupportedOperationException();
+         int iR = -1, max = 0;
+         if (v.length==0)return null;
+        for (int i = l; i <= r ; i++) {
+            int aux = countCommomLetters(v[i],word);
+            if(aux > max) {
+                max=aux;
+                iR=i;
+                continue;
+            }
+            if(iR!=-1 && aux==max && v[i].length()>v[iR].length())iR=i;
+        }
+         return iR==-1 ? v [v.length-1]: v[iR];
+
+    }
+
+    private static int countCommomLetters(String s, String word) {
+        int i = 0;
+        for (; ((i < word.length()) && (i< s.length())) && (s.charAt(i)==word.charAt(i)); i++) {
+
+        }
+         return i;
     }
 
 
-     public static int sumGivenN(int n){
+    public static int sumGivenN(int n){
            throw new UnsupportedOperationException();
          }
 

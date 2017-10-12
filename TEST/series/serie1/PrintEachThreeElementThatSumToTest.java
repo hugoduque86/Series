@@ -32,14 +32,14 @@ public class PrintEachThreeElementThatSumToTest {
     public void test_printEachThreeElementThatSumTo_in_unsortedConsecutive_subsequence() {
         int[] array = {5, 12, 3, 4, 9, 2, 1, 8, 7, 10, 6, 11};
         assertEquals(7, printEachThreeElementsThatSumTo(array, 0, array.length - 1, 12));
-        assertEquals(3, printEachThreeElementsThatSumTo(array, 1, array.length - 2, 12));
+        assertEquals(5, printEachThreeElementsThatSumTo(array, 1, array.length - 2, 12));
     }
 
     @Test
     public void test_printEachThreeElementThatSumTo_in_sortNonConsecutive_subsequence() {
         int[] array = {1, 2, 4, 7, 8, 9, 11, 12, 15, 17};
         assertEquals(2, printEachThreeElementsThatSumTo(array, 0, array.length - 1, 12));
-        assertEquals(1, printEachThreeElementsThatSumTo(array, 1, array.length - 2, 12));
+        assertEquals(0, printEachThreeElementsThatSumTo(array, 1, array.length - 2, 12));
 
     }
 
