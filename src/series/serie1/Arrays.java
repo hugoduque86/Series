@@ -153,7 +153,26 @@ public class Arrays {
 
 
     public static int sumGivenN(int n){
-           throw new UnsupportedOperationException();
+
+         int l = 0 , count =0, times=1 ;
+        for (int r = 1; r < n; ) {
+            if(count==n){
+                times++;
+                l=r;
+                count=0;
+            }
+            if(count<n){
+                count+=r++;
+            }
+            if (count>n){
+                count-=l;
+                l++;
+            }
+
+
+        }
+
+         return times;
          }
 
     public static int deleteMin(int[] maxHeap, int sizeHeap) {
