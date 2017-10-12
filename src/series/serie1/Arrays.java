@@ -176,7 +176,32 @@ public class Arrays {
          }
 
     public static int deleteMin(int[] maxHeap, int sizeHeap) {
-       throw new UnsupportedOperationException();
+        if(sizeHeap<=1) return 0;
+        int firstChild = (sizeHeap - 2) /2 ;
+        int min =maxHeap[firstChild++],  iMin = -1;
+        for (int i =firstChild ; i<sizeHeap;++i){
+            if(min > maxHeap[i]){
+                iMin=i;
+                min= maxHeap[i];
+            }
+        }
+
+            maxHeap[iMin] = maxHeap[sizeHeap - 1];
+            heapParent(maxHeap, iMin);
+
+
+        return sizeHeap -1;
+    }
+
+    private static void heapParent(int[] maxHeap, int iMin) {
+        if (iMin==0) return;
+        int parent = (iMin-1) /2;
+        if(maxHeap[parent]<maxHeap[iMin]){
+            int aux = maxHeap[parent];
+            maxHeap[parent]=maxHeap[iMin];
+            maxHeap[iMin]=aux;
+            heapParent(maxHeap,parent);
+        }
     }
 
 }
