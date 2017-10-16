@@ -1,7 +1,7 @@
 package series.serie1;
 public class Arrays {
 
-/*    public static int printEachThreeElementsThatSumTo(int[] v, int l, int r, int s){
+ /*   public static int printEachThreeElementsThatSumTo(int[] v, int l, int r, int s){
         int count =0 ;
         int [] auxArray = new int[r-l+1];
         for (int i = 0; i <auxArray.length ; i++) {
