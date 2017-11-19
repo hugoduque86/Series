@@ -69,6 +69,8 @@ public class ListUtilTest {
 			for(int j=arraylist.get(i).size()-1; j>=0;j--){
 				Node<Integer> novo=new Node<Integer>(arraylist.get(i).get(j));
 				novo.next=array[i];
+				if(array[i]!=null)
+					array[i].previous=novo;
 				array[i]=novo;
 			}
 		}

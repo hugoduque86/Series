@@ -58,9 +58,11 @@ public class OccurAtLeastKTimeTest {
 		for(int i=0;i<array.length;i++){
 			array[i]=new Node<Integer>(i);
 		}              
-        for(int i=2; i<10; i++)
+        for(int i=2; i<10; i++){
+
 			assertTrue(ListUtilTest.isEmptyListWithSentinel(occurAtLeastKTimes(array, CMP_NATURAL_ORDER,i)) );
 		}
+	}
 	
 
 	
