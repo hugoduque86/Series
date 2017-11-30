@@ -37,7 +37,7 @@ public class RankBySimikarities {
             BufferedReader in = new BufferedReader(new FileReader(arg));
             String aux = in.readLine();
             while (aux!=null){
-                String[] a1 = aux.split(" ");
+                String[] a1 = aux.split("");
                 for (String word:
                         a1) {
                     if(stopWords.contains(word))
