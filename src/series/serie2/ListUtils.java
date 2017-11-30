@@ -23,6 +23,7 @@ public class ListUtils {
 
 			list=list.next;
 		}
+
 	}
 
 

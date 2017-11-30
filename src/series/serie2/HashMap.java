@@ -18,7 +18,7 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
             this.hc = hc;
             this.next = next;
         }
-     }
+    }
 
     // << Variaveis de instancia >>
 
@@ -27,24 +27,15 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
     private Node<K,V>c = null;
     private float lf ;
     private int size = 0;
-    /*
-    * Por no next para simplificar o remove
-    *
-    *
-    *
-    *
-    *
-    * */
-    /**
-     *
-     *
-     * @param initialCapacity
-     * @param lf
-     */
+
+
     //<< Construtores >>
-    public HashMap( int initialCapacity, float lf ) {
+    public HashMap ( int initialCapacity, float lf ) {
         super();
         array=new Node[initialCapacity];
+        for (int i = 0; i < array.length; i++) {
+            array[i]=new Node<K,V>(null,null,-1,null);
+        }
         currentMaxCapacity=initialCapacity;
         this.lf=lf;
 
@@ -61,8 +52,6 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
     @Override
     public Set<Entry<K,V>> entrySet() { return entrySet; }
     private Set<Entry<K,V>> entrySet = new AbstractSet<Entry<K, V>>() {
-        //    private int sizeSet=size;
-
             @Override
             public Iterator<Entry<K, V>> iterator() {
 
@@ -74,10 +63,10 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
                     public boolean hasNext() {
 
                         if(c!=null)return true;
-                        while (ix<array.length&&array[ix]==null)
+                        while (ix<array.length&&array[ix].next==null)
                             ix++;
                         if(ix==array.length)return false;
-                        c=array[ix++];
+                        c=array[ix++].next;
 
                         return true;
                     }
@@ -101,27 +90,24 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
              */
             @Override
             public boolean contains(Object o) {
-                Node<K,V> aux =(Node<K, V>) o;
-                int i = ((aux.getKey().hashCode()%currentMaxCapacity)+currentMaxCapacity)%currentMaxCapacity ;// O(n)
+
+                int i = ((o.hashCode()%currentMaxCapacity)+currentMaxCapacity)%currentMaxCapacity ;
                 c = array[i];
-                while (c!=null&&!c.equals(o))c=c.next;
+                while (c.next!=null&&c.next.getKey().hashCode()!=o.hashCode())c=c.next;
                 return c!=null;
 
             }
             @Override
             public void clear() { // O(m)
                 for (int i = 0; i < array.length; i++) {
-                    array[i]=null;
+                    array[i].next=null;
                 }
                 size=0;
             }
             @Override
             public boolean remove(Object o) {
-                Node<K,V> aux =(Node<K, V>) o ;
-                Node<K,V> a=array[(aux.getValue().hashCode()%7+currentMaxCapacity)%currentMaxCapacity];
-                if(!containsKey(aux.getKey()))return false;
-                while (a.getKey().hashCode()!=aux.getKey().hashCode())a=a.next;
-                a=a.next;
+                if(!contains(o))return false;
+                c.next=c.next.next;
                 size--;
                 return true;
             }
@@ -132,16 +118,17 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
     public V put( K k, V v  ) { // Implementar O(1)
         if ( k == null )
             throw new IllegalArgumentException("not support null keys");
-        int i = ((k.hashCode()%currentMaxCapacity)+currentMaxCapacity)%currentMaxCapacity;
+
         if(containsKey(k)){
 
-            V prev = c.getValue();
-            c.setValue(v);
+            V prev = c.next.getValue();
+            c.next.setValue(v);
             return prev;
 
         }
         size++;
-        array[i]=new Node<K,V>(k,v , k.hashCode(),array[i]);
+        int i = ((k.hashCode()%currentMaxCapacity)+currentMaxCapacity)%currentMaxCapacity;
+        array[i].next=new Node<K,V>(k,v , k.hashCode(),array[i].next);
         return null;
 
 
@@ -154,29 +141,22 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
     @Override
     public V get( Object k ) {
         if(!containsKey(k))return null;
-        return c.getValue();
+        return c.next.getValue();
     }
 
     @Override
     public boolean containsKey(Object key) {
         int i = ((key.hashCode()%currentMaxCapacity)+currentMaxCapacity)%currentMaxCapacity;
         c=array[i];
-        while (c !=null&&c.getKey().hashCode()!=key.hashCode())c=c.next;
-        return c !=null;
+        while (c.next !=null&&c.next.getKey().hashCode()!=key.hashCode())c=c.next;
+        return c.next !=null;
     }
 
     public V remove( Object k ) {
         if(!containsKey(k))return null;
-        int i = ((k.hashCode()%currentMaxCapacity)+currentMaxCapacity)%currentMaxCapacity;
-        Node<K,V> aux = array[i];
-        if(array[i].getKey().hashCode()==k.hashCode()) {
-            array[i] = array[i].next;
-            return aux.getValue();
-        }
-        while (array[i].next.getKey().hashCode()!=k.hashCode())array[i]=array[i].next;
-        array[i].next=array[i].next.next;
-        array[i]=aux;
+        Node<K,V> aux = c.next;
         size--;
+        c.next=c.next.next;
         return aux.getValue();
     }
 

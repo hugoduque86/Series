@@ -14,7 +14,6 @@ public class RankBySimikarities {
     private static int queryCount = 0;
     public static void main(String[] args) {
         addStopOrQueryWords(args[0],stopWords);
-
         addWords(args);
         Scanner in =new Scanner(System.in);
         String g;
@@ -26,7 +25,6 @@ public class RankBySimikarities {
                 addQuery(g.replace("ranking ",""));
                 for (int i = 1; i <args.length ; i++) {
                     ranking(args[i]);
-
                 }
             }
         }while (!g.equals("exit"));
@@ -45,9 +43,13 @@ public class RankBySimikarities {
                     if(stopWords.contains(word))
                         continue;
                     if(query.containsKey(word)){
-                        query.put(word,query.get(word)+1);
+                        int c1 = query.get(word);
+                        queryCount-=c1*c1++;
+                        queryCount+=c1*c1;
+                        query.put(word,c1);
                         continue;
                     }
+                    queryCount++;
                     query.put(word,1);
 
                 }
@@ -55,19 +57,13 @@ public class RankBySimikarities {
 
             }
             in.close();
-            countQuery(query.values().iterator());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private static void countQuery(Iterator<Integer> entries) {
-        while (entries.hasNext()){
-            int aux= entries.next();
-            queryCount+=aux*aux;
-        }
-    }
 
 
     private static void ranking(String arg) {
@@ -77,7 +73,6 @@ public class RankBySimikarities {
             String aux = it.next();
             if(words.containsKey(arg+aux)){
                 c1+=words.get(arg+aux);
-//                c2+=query.get(aux);
             }
         }
         System.out.println(arg+" = "+(c1/(Math.sqrt(queryCount)*Math.sqrt(words.get(arg)))));
@@ -86,41 +81,32 @@ public class RankBySimikarities {
 
     }
 
-    private static void count(HashMap<String, Integer> args, String file) {
-
-        int count = 0;
-        Iterator<Integer> it = args.values().iterator();
-        while (it.hasNext()) {
-            int aux = it.next();
-
-            count+=aux*aux;
-        }
-        words.put(file,count);
-    }
-
     private static void addWords(String[] args) {
         for (int i = 1; i<args.length;i++) {
             try {
                 BufferedReader in = new BufferedReader(new FileReader(args[i]));
                 String aux = in.readLine();
-                HashMap<String,Integer>  aux1 = new HashMap<String, Integer>();
-
+                int c = 0;
                 while (aux!=null){
                     String[] a1 = aux.split(" ");
                     for (String word:
                             a1) {
                         if(stopWords.contains(word))
                             continue;
-                        if (aux1.containsKey(args[i]+word)){
-                            aux1.put(args[i]+word,aux1.get(args[i]+word)+1);
+                        if (words.containsKey(args[i]+word)){
+                            int c1 = words.get(args[i]+word);
+                            c-=c1*c1++;
+                            c+=c1*c1;
+
+                            words.put(args[i]+word,c1);
                             continue;
                         }
-                        aux1.put(args[i]+word,1);
+                        c++;
+                        words.put(args[i]+word,1);
                     }
                     aux=in.readLine();
                 }
-                count(aux1,args[i]);
-                words.putAll(aux1);
+                words.put(args[i],c);
                 in.close();
             }catch (IOException e){
                 e.printStackTrace();
