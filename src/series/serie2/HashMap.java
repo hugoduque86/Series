@@ -198,7 +198,7 @@ public class HashMap<K,V> extends AbstractMap<K, V> {
         // S� implementar se conseguirem diminuir a complexidade dos m�todos
         // caso contr�rio, remover este Override
         return new AbstractCollection<V>() {
-//            private Iterator<Entry<K,V>>it = entrySet.iterator();
+//            private Iterator<Entry<K,v>>it = entrySet.iterator();
             @Override
             public Iterator<V> iterator() {
 
